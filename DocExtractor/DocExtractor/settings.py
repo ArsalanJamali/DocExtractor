@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'knox',
-    'customer_app.apps.CustomerAppConfig'
+    'customer_app.apps.CustomerAppConfig',
+    'core.apps.CoreConfig'
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,9 @@ REST_FRAMEWORK = {
     ]
 }
 
+#for documents images
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 
+#Tessesract Location
+tesseract_location="C:\\Program Files\\Tesseract-OCR\\tesseract.exe" 
