@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'customer_app.apps.CustomerAppConfig',
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,3 +140,5 @@ MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 
 #Tessesract Location
 tesseract_location="C:\\Program Files\\Tesseract-OCR\\tesseract.exe" 
+
+CORS_ORIGIN_ALLOW_ALL = True
