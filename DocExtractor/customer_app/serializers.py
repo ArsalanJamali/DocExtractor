@@ -24,4 +24,5 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         }
 
     def create(self,validated_data):
+        print(validated_data)
         return get_user_model().objects.create_user(**validated_data)
