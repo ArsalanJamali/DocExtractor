@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'knox',
-    'customer_app.apps.CustomerAppConfig'
+    'customer_app.apps.CustomerAppConfig',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -132,5 +134,12 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ]
 }
+
+#for documents images
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,"media")
+
+#Tessesract Location
+tesseract_location="C:\\Program Files\\Tesseract-OCR\\tesseract.exe" 
 
 CORS_ORIGIN_ALLOW_ALL = True
