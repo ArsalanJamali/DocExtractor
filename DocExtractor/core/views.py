@@ -168,16 +168,18 @@ class ListModelImages(ListAPIView):
 def preview_all_images(request):
     pk_list=request.POST.getlist('pk')
     objs=DocumentImage.objects.filter(pk__in=pk_list)
-    output_dict=dict()
+    output_list=list()
     
     for obj in objs:
-        output_dict[obj.pk]=dict()
-        output_dict[obj.pk]['url']='' if obj.document_image==None else obj.document_image.url
-        output_dict[obj.pk]['label']=dict()
+        output_dict=dict()
+        output_dict['url']='' if obj.document_image==None else obj.document_image.url
+        output_dict['label']=dict()
         for label_obj in obj.label_set.all():
-            output_dict[obj.pk]['label'][label_obj.key]=label_obj.value
+            output_dict['label'][label_obj.key]=label_obj.value
 
-    return Response(output_dict)
+        output_list.append(output_dict)
+
+    return Response(output_list)
 
 
 
