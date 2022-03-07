@@ -13,6 +13,6 @@ urlpatterns=[
     path('delete_model/<int:pk>/',DeleteModelView.as_view(),name='delete_model'),
     path('delete_model_image/<int:pk>/',DeleteModelImageView.as_view(),name='delete_model_image'),
     path('list_model_history/<int:pk>/',ListModelImages.as_view(),name='list_model_images'),
-    path('list_all_images/',preview_all_images,name='preview_all_images')
+    path('preview_all_images/',preview_all_images,name='preview_all_images')
 
 ]
