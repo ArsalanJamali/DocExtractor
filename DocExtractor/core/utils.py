@@ -157,7 +157,20 @@ def process_image(image,type):
         model_file_name='layoutlm_weights_receipts.pt'
         label_file_name='labels_receipt.txt'
         token_classification_filename='LayoutLMTokenClassification-Receipt'
-    
+    elif type==2:
+        invoice_recipt_po_dict={
+            'company_address':'',
+            'delivery_date':'',
+            'issue_date ':'',
+            'purchase_order_no':'',
+            'tax':'',
+            'total_amount':'',
+            'vendor_address':'',
+        }
+        model_file_name='layoutlm_weights_PO_3.06.22.pt'
+        label_file_name='labels_PO.txt'
+        token_classification_filename='LayoutLMTokenClassification-PO'
+
 
     labels = get_labels(os.path.join(config_files_path,label_file_name))
     num_labels = len(labels)
@@ -173,7 +186,7 @@ def process_image(image,type):
             'max_seq_length': 512,
             'model_type': 'layoutlm',}
 
-    print("dhdkshdkshdksdnd")
+    # print("dhdkshdkshdksdnd")
     args = AttrDict(args)
 
     model_path=os.path.join(config_files_path,model_file_name)
