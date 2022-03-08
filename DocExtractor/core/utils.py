@@ -11,7 +11,7 @@ import os
 
 run_device = device("cuda" if is_available() else "cpu")
 pytesseract.pytesseract.tesseract_cmd=tesseract_location
-config_files_path='D:\\FYP\\DocExtractor - Backend\\DocExtractor\\DocExtractor\\config_files\\'
+config_files_path='E:\\DocExtractor-backend\\DocExtractor\\DocExtractor\\config_files'
 
 class AttrDict(dict):
     def __init__(self, *args, **kwargs):
