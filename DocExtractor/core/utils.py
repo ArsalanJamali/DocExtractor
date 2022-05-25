@@ -142,7 +142,16 @@ def process_image(image,type):
             'tax':'',
             'invoice_date':'',
             'total':'',
-            'buyer_address':''
+            'buyer_address':'',
+            'seller_address':'',
+            'seller_email':'',
+            'seller_name':'',
+            'seller_phone':'',
+            'po_number':'',
+            'buyer_name':'',
+            'buyer_phone':'',
+            'subtotal':'',
+            'buyer_email':''
             }
         model_file_name='layoutlm_weights.pt'
         label_file_name='labels_invoice.txt'
