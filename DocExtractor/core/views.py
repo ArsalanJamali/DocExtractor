@@ -11,6 +11,7 @@ from PIL import Image
 import json
 from openpyxl import Workbook
 from rest_framework.generics import UpdateAPIView,DestroyAPIView,ListAPIView
+from django.db.models import Q 
 
 # Create your views here.
 
@@ -189,6 +190,16 @@ def delete_all_images(request):
     DocumentImage.objects.filter(pk__in=pk_list).delete()
     return Response({'Success':True})
 
+@api_view(['GET',])
+@authentication_classes([TokenAuthentication,])
+@permission_classes([IsAuthenticated])
+def SearchModel(request):
+    query=request.GET['query']
+    if query!='':
+        return Response("Empty Query")
+
+    documents=Document.objects.filter( Q(user=request.user.pk) & (Q(model_id__icontains=query) | Q(description__icontains=query)) ).order_by('-created_at','-pk')
+    return Response(DocumentSerializer(documents,many=True).data)
 
 
 
