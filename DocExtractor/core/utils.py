@@ -153,9 +153,9 @@ def process_image(image,type):
             'subtotal':'',
             'buyer_email':''
             }
-        model_file_name='layoutlm_weights.pt'
-        label_file_name='labels_invoice.txt'
-        token_classification_filename='LayoutLMTokenClassification-Invoice'
+        model_file_name='layoutlm_weights-invoice-25-5-2022.pt'
+        label_file_name='labels_invoice2.0.txt'
+        token_classification_filename='LayoutLMTokenClassification-Invoice2.0'
     elif type==1:
         invoice_recipt_po_dict={
             'company':'',
