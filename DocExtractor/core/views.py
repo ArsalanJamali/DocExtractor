@@ -14,6 +14,10 @@ from rest_framework.generics import UpdateAPIView,DestroyAPIView,ListAPIView
 
 # Create your views here.
 
+
+
+
+
 @api_view(['GET',])
 @authentication_classes([TokenAuthentication,])
 @permission_classes([IsAuthenticated])
@@ -182,6 +186,14 @@ def preview_all_images(request):
     return Response(output_list)
 
 
+
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication,])
+@permission_classes([IsAuthenticated])
+def delete_all_images(request):
+    pk_list=request.POST.getlist('pk')
+    DocumentImage.objects.filter(pk__in=pk_list).delete()
+    return Response({'Success':True})
 
 # apply try except remember
 
