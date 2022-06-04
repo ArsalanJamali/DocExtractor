@@ -199,10 +199,14 @@ def delete_all_images(request):
 @permission_classes([IsAuthenticated])
 def SearchModel(request):
     query=request.GET['query']
-    if query!='':
+    
+    if query=='':
         return Response("Empty Query")
 
+
+    
     documents=Document.objects.filter( Q(user=request.user.pk) & (Q(model_id__icontains=query) | Q(description__icontains=query)) ).order_by('-created_at','-pk')
+    
     return Response(DocumentSerializer(documents,many=True).data)
 
 

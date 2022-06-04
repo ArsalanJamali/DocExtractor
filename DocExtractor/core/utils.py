@@ -183,9 +183,9 @@ def process_image(image,type):
         label_file_name='labels_PO.txt'
         token_classification_filename='LayoutLMTokenClassification-PO'
     elif type==3:
-        model_file_name='layoutlm_weights_PO_3.06.22.pt' #change these
-        label_file_name='labels_PO.txt'
-        token_classification_filename='LayoutLMTokenClassification-PO'
+        model_file_name='layoutlm_form.pt' #change these
+        label_file_name='labels_forms.txt'
+        token_classification_filename='LayoutLMTokenClassification-Form'
 
 
     labels = get_labels(os.path.join(config_files_path,label_file_name))
