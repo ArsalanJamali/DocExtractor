@@ -124,6 +124,9 @@ def preprocess(output):
     value=output[key].split()
     value=(map(lambda x: x.lower(), value))
     value=" ".join(list(dict.fromkeys(value)))
+    key=" ".join(list(dict.fromkeys(key.lower().split())))
+    key=key.replace('_','')
+    value=value.replace('_','')
     output2[key]=value
   return output2
 
@@ -179,6 +182,10 @@ def process_image(image,type):
         model_file_name='layoutlm_weights_PO_3.06.22.pt'
         label_file_name='labels_PO.txt'
         token_classification_filename='LayoutLMTokenClassification-PO'
+    elif type==3:
+        model_file_name='layoutlm_weights_PO_3.06.22.pt' #change these
+        label_file_name='labels_PO.txt'
+        token_classification_filename='LayoutLMTokenClassification-PO'
 
 
     labels = get_labels(os.path.join(config_files_path,label_file_name))
@@ -205,8 +212,14 @@ def process_image(image,type):
     width, height = image.size
     w_scale = 1000/width
     h_scale = 1000/height
-
-    ocr_df = pytesseract.image_to_data(image, output_type='data.frame')           
+    ocr_df=None
+    
+    if type==3:
+        custom_config = r'--oem 3 --psm 6'
+        ocr_df = pytesseract.image_to_data(image, output_type='data.frame',config=custom_config) 
+    else:
+        ocr_df = pytesseract.image_to_data(image, output_type='data.frame')           
+    
     ocr_df = ocr_df.dropna() \
                 .assign(left_scaled = ocr_df.left*w_scale,
                         width_scaled = ocr_df.width*w_scale,
@@ -258,19 +271,49 @@ def process_image(image,type):
 
 
     output_dict=dict()
-    for prediction, box in zip(word_level_predictions, final_boxes):
-        predicted_label = iob_to_label(label_map[prediction]).lower()
+    if type==3:
+        question=''
+        answer=''
+        temp_question=''
+        for prediction, box in zip(word_level_predictions, final_boxes):
+            predicted_label = iob_to_label(label_map[prediction]).lower()
+            if predicted_label=='' or predicted_label=='header' or predicted_label=='other':
+                continue
+            
+            word=get_text(box[0],box[1],box[2],box[3],ocr_df)
+            if predicted_label=='question':
+                if answer!='' and temp_question in output_dict:
+                    output_dict[temp_question]=answer
+                    answer=''
+                    temp_question=''
+                question+=(word+" ")
+
+            if predicted_label=='answer':
+                if question!='':
+                    output_dict[question]=''
+                    temp_question=question
+                    question=''
+                answer+=(word+" ")
+
+        if answer!='' and temp_question in output_dict:
+            output_dict[temp_question]=answer
+            answer=''       
+    else:
+        for prediction, box in zip(word_level_predictions, final_boxes):
+            predicted_label = iob_to_label(label_map[prediction]).lower()
+            
+            if predicted_label!='':
+                text=get_text(box[0],box[1],box[2],box[3],ocr_df)
+            
+                if predicted_label not in output_dict:
+                    output_dict[predicted_label]=text
+                else:
+                    if text!='':
+                        output_dict[predicted_label]+=(' '+text)
         
-        if predicted_label!='':
-            text=get_text(box[0],box[1],box[2],box[3],ocr_df)
-        
-            if predicted_label not in output_dict:
-                output_dict[predicted_label]=text
-            else:
-                if text!='':
-                    output_dict[predicted_label]+=(' '+text)
-    
     output_dict=preprocess(output_dict)
+    if type==3:
+        return output_dict
 
     for key in output_dict.keys():
         if type==1:

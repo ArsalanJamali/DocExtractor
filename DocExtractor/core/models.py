@@ -9,7 +9,8 @@ User=get_user_model()
 DOCUMENT_TYPE=(
     (0,'Invoice'),
     (1,'Receipt'),
-    (2,'Purchase Order')
+    (2,'Purchase Order'),
+    (3,'Form')
 )
 
 class Document(models.Model):
