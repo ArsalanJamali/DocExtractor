@@ -179,6 +179,7 @@ def preview_all_images(request):
         output_dict=dict()
         output_dict['url']='' if obj.document_image==None else obj.document_image.url
         output_dict['label']=dict()
+        output_dict['image_id']=obj.pk
         for label_obj in obj.label_set.all():
             output_dict['label'][label_obj.key]=label_obj.value
 
