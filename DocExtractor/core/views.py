@@ -220,6 +220,30 @@ def delete_all_images(request):
     DocumentImage.objects.filter(pk__in=pk_list).delete()
     return Response({'Success':True})
 
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication,])
+@permission_classes([IsAuthenticated])
+def update_images(request):
+    json_data=request.POST['data']
+    data=json.loads(json_data)
+
+    for key in data.keys():
+        try:
+            obj=DocumentImage.objects.get(pk=key)
+        except:
+            obj=None
+        
+        if obj!=None:
+            if obj.label_set!=None:
+                obj.label_set.all().delete()
+                for key_ in data[key].keys():
+                    if key_!='' and data[key][key_]!='':
+                        label_obj=Label(image=obj,key=key_,value=data[key][key_][0])
+                        label_obj.save()
+    
+    return Response({'Success':True})
+
+
 # apply try except remember
 
 

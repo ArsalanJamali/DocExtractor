@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (create_document_model,get_recent_models,
                     process_documents,save_json,save_csv,UpdateModelDescription,DeleteModelView,
-                    DeleteModelImageView,ListModelImages,preview_all_images,delete_all_images,SearchModel)
+                    DeleteModelImageView,ListModelImages,preview_all_images,delete_all_images,SearchModel,update_images)
 
 urlpatterns=[
     path('create_document/',create_document_model,name='create'),
@@ -15,6 +15,7 @@ urlpatterns=[
     path('list_model_history/<int:pk>/',ListModelImages.as_view(),name='list_model_images'),
     path('preview_all_images/',preview_all_images,name='preview_all_images'),
     path('delete_model_images/',delete_all_images,name='delete_model_images'),
-    path('search/',SearchModel,name='search')
+    path('search/',SearchModel,name='search'),
+    path('update_image_label/',update_images,name='update_image')
 
 ]
