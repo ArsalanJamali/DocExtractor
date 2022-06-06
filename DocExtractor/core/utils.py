@@ -118,15 +118,17 @@ def get_text(x,y,w,h,ocr_df):
       return text
   return ''
 
-def preprocess(output):
+def preprocess(output,type):
+
   output2=dict()
   for key in output.keys():
     value=output[key].split()
     value=(map(lambda x: x.lower(), value))
     value=" ".join(list(dict.fromkeys(value)))
-    key=" ".join(list(dict.fromkeys(key.lower().split())))
-    key=key.replace('_','')
-    value=value.replace('_','')
+    if (type==3):
+        key=" ".join(list(dict.fromkeys(key.lower().split())))
+        key=key.replace('_','')
+        value=value.replace('_','')
     output2[key]=value
   return output2
 
@@ -301,7 +303,7 @@ def process_image(image,type):
     else:
         for prediction, box in zip(word_level_predictions, final_boxes):
             predicted_label = iob_to_label(label_map[prediction]).lower()
-            
+            print(predicted_label)
             if predicted_label!='':
                 text=get_text(box[0],box[1],box[2],box[3],ocr_df)
             
@@ -310,8 +312,10 @@ def process_image(image,type):
                 else:
                     if text!='':
                         output_dict[predicted_label]+=(' '+text)
-        
-    output_dict=preprocess(output_dict)
+    
+    print(output_dict)
+    output_dict=preprocess(output_dict,type)
+    
     if type==3:
         return output_dict
 
